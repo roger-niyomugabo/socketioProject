@@ -62,7 +62,7 @@ async function handlePhoneRequest(socket, request) {
     const employee = await findEmployee(request);
     if (employee) {
       socket.write(
-        JSON.stringify({ type: "phone", data: employee.phoneNumber })
+        JSON.stringify({ type: "phone", data: employee.phone_number })
       );
     } else {
       sendError(socket, "Employee not found");

@@ -13,8 +13,17 @@ const pool = new Pool(connectionConfig);
 // Database and table creation queries
 const databaseName = "socketdb";
 
+// const createEmployeesTableQuery =
+//   "CREATE TABLE IF NOT EXISTS employees (id SERIAL PRIMARY KEY, department_number INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, phone_number VARCHAR(20), email VARCHAR(255) NOT NULL)";
+
 const createEmployeesTableQuery =
   "CREATE TABLE IF NOT EXISTS employees (id SERIAL PRIMARY KEY, department_number INT NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, phone_number VARCHAR(20), email VARCHAR(255) NOT NULL)";
+
+// Add indexes separately
+const createIndexesQuery =
+  "CREATE INDEX idx_first_name ON employees (first_name);" +
+  "CREATE INDEX idx_last_name ON employees (last_name);" +
+  "CREATE INDEX idx_department_number ON employees (department_number);";
 
 // Dummy data
 const employees = [
@@ -69,6 +78,9 @@ async function createDatabaseAndTables() {
 
     // Create the employees table
     await poolSocketDB.query(createEmployeesTableQuery);
+
+    // Create indexes
+    await poolSocketDB.query(createIndexesQuery);
 
     // Insert dummy data into the employees table
     await poolSocketDB.query(
